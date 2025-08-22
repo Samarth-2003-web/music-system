@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sam's Music Player</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #121212, #181818);
+      color: #fff;
+      margin: 0;
+      padding: 0px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+      color: #1db954;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #1a1919;
+      border-radius: 16px;
+      overflow: hidden;
+      text-align: center;
+      box-shadow: 0 6px 12px rgba(0, 255, 225, 0.5);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      background: #00ffb3;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.6);
+    }
+    .cover {
+      width: 70%;
+      height: 180px;
+
+      object-fit: cover;
+    }
+    .title {
+      font-size: 1.1em;
+      margin: 12px 0;
+      color: #ff0000;
+      font-weight: 600;
+    }
+    .btn {
+      background: #00ddf1;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      color: rgb(6, 6, 6);
+      cursor: pointer;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .btn:hover {
+      background: #1ed760;
+    }
+
+    /* Player Container */
+    .player-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #181818;  /* Spotify-like dark grey */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 10px;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.7);
+  }
+
+    .player-info { 
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .player-info img {
+      width: 50px;
+      height: 40px;
+      border-radius: 20px;
+      object-fit: cover;
+    }
+    .player-info .song-title {
+      font-weight: bold;
+      font-size: 1em;
+      color: #fff;
+    }
+    audio {
+      flex: 1;
+      margin: 0 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎵 Sam's Music Player</h1>
+  <div class="container">
+    <!-- Mapping songs with covers -->
+    <div class="card">
+      <img src="{{ url_for('static', filename='img/Migenta.webp') }}" class="cover" alt="Album Cover">
+      <div class="title">DJ Snake - Magenta Riddim</div>
+      <button class="btn" onclick="playSong('{{ url_for('static', filename='music/Magenta_Riddim.mp3') }}', 'DJ Snake - Magenta Riddim', '{{ url_for('static', filename='img/Migenta.webp') }}')">▶ Play</button>
+    </div>
+
+    <div class="card">
+      <img src="{{ url_for('static', filename='img/English_RAP_SONG.webp') }}" class="cover" alt="Album Cover">
+      <div class="title">English DJ Song (Rap)</div>
+      <button class="btn" onclick="playSong('{{ url_for('static', filename='music/English_RAP_SONG.mp3') }}', 'English DJ Song (Rap)', '{{ url_for('static', filename='img/rapper-on-concert-stage.webp') }}')">▶ Play</button>
+    </div>
+
+    <div class="card">
+      <img src="{{ url_for('static', filename='img/Cakedup.webp') }}" class="cover" alt="Album Cover">
+      <div class="title">Cakedup - Money In Da Bank</div>
+      <button class="btn" onclick="playSong('{{ url_for('static', filename='music/Money_In_Da_Bank.mp3') }}', 'Cakedup - Money In Da Bank', '{{ url_for('static', filename='img/Cakedup.webp') }}')">▶ Play</button>
+    </div>
+    <div class="card">
+      <img src="{{ url_for('static', filename='img/Monica.webp') }}" class="cover" alt="Album Cover">
+      <div class="title">Monica </div>
+      <button class="btn" onclick="playSong('{{ url_for('static', filename='music/Monica.mp3') }}', 'Monica', '{{ url_for('static', filename='img/Monica.webp') }}')">▶ Play</button>
+    </div>
+    <div class="card">
+      <img src="{{ url_for('static', filename='img/Enjoy_Enjaami.webp') }}" class="cover" alt="Album Cover">
+      <div class="title">Enjoy_Enjaami</div>
+      <button class="btn" onclick="playSong('{{ url_for('static', filename='music/Enjoy_Enjaami.mp3') }}', 'Enjoy_Enjaami', '{{ url_for('static', filename='img/Enjoy_Enjaami.webp') }}')">▶ Play</button>
+    </div>
+    <div class="card">
+      <img src="{{ url_for('static', filename='img/In my mind.webp') }}" class="cover" alt="Album Cover">
+      <div class="title">Dynoro & Gigi D’Agostino - In My Mind</div>
+      <button class="btn" onclick="playSong('{{ url_for('static', filename='music/In_My_Mind.mp3') }}', 'Dynoro & Gigi D’Agostino - In My Mind', '{{ url_for('static', filename='img/In my mind.webp') }}')">▶ Play</button>
+    </div>
+    <div class="card">
+      <img src="{{ url_for('static', filename='img/GANGNAM_STYLE.JPG') }}" class="cover" alt="Album Cover">
+      <div class="title">GANGNAM_STYLE</div>
+      <button class="btn" onclick="playSong('{{ url_for('static', filename='music/GANGNAM_STYLE.mp3') }}', 'GANGNAM_STYLE', '{{ url_for('static', filename='img/GANGNAM_STYLE.JPG') }}')">▶ Play</button>
+    </div>
+     <div class="card">
+      <img src="{{ url_for('static', filename='img/Sahiba.JPG') }}" class="cover" alt="Album Cover">
+      <div class="title">Sahiba</div>
+      <button class="btn" onclick="playSong('{{ url_for('static', filename='music/Sahiba.mp3') }}', 'Sahiba', '{{ url_for('static', filename='img/Sahiba.JPG') }}')">▶ Play</button>
+    </div>
+  </div>
+
+  <!-- Player -->
+  <div class="player-container">
+    <div class="player-info">
+      <img id="current-cover" src="{{ url_for('static', filename='img/rapper-on-concert-stage.webp') }}" alt="Cover">
+      <div class="song-title" id="current-title">Select a song</div>
+    </div>
+    <audio id="player" controls></audio>
+  </div>
+
+  <script>
+    const player = document.getElementById("player");
+    const currentTitle = document.getElementById("current-title");
+    const currentCover = document.getElementById("current-cover");
+
+    function playSong(src, title, cover) {
+      player.src = src;
+      player.play();
+      currentTitle.textContent = title;
+      currentCover.src = cover;
+    }
+  </script>
+
+</body>
+</html>
